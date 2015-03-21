@@ -8,30 +8,30 @@
 
 class srfax
 {
-	private $api_user;
-	private $api_pass;
-	private $api_url;
+    private $api_user;
+    private $api_pass;
+    private $api_url;
     private $sender_fax;
     private $sender_email;
-	
+    
     /*
-	 * Class constructor
+     * Class constructor
      * $api_user: SRFax API user (customer number).  Required.
      * $api_user: SRFax API password.  Required.
      * $options: Array of optional parameters possible for the given call
      * return: Array to be used as the base parameters to the call() method
      */
-	function __construct($api_user, $api_pass, $api_url = "", $sender_fax = null, $sender_email = null){
-		$this->api_user = $api_user;
-		$this->api_pass = $api_pass;
+    function __construct($api_user, $api_pass, $api_url = "", $sender_fax = null, $sender_email = null){
+        $this->api_user = $api_user;
+        $this->api_pass = $api_pass;
         if(!empty($api_url)) {
-		    $this->api_url = $api_url;
+            $this->api_url = $api_url;
         } else {
             $this->api_url = 'https://www.srfax.com/SRF_SecWebSvc.php';
         }
         $this->sender_fax = $sender_fax;
         $this->sender_email = $sender_email;
-	}
+    }
 
     /*
 	 * Method to set the options array where applicable
@@ -54,37 +54,37 @@ class srfax
      * $return_response: True to get the raw response object, false to just get the success response or exception on failure
      * return: JSON decoded object on success or throws an exception on cURL error.
      */
-	private function _call($params, $return_response = false) {
-		$return = null;
-		if(is_array($params) && !empty($params)) {
+    private function _call($params, $return_response = false) {
+        $return = null;
+        if(is_array($params) && !empty($params)) {
             // Setup our payload, note we force JSON regardless of what you may pass.
             $params['access_id'] = $this->api_user;
-			$params['access_pwd'] = $this->api_pass;
+            $params['access_pwd'] = $this->api_pass;
             $params['sResponseFormat'] = 'JSON';
             $payload = json_encode($params);
 
             // Setup our cURL call and run it
-			$options = array (
-				CURLOPT_POST => 1,
-				CURLOPT_HEADER => 0,
-				CURLOPT_URL => $this->api_url,
-				CURLOPT_FRESH_CONNECT => 1,
-				CURLOPT_RETURNTRANSFER => 1,
+            $options = array (
+                CURLOPT_POST => 1,
+                CURLOPT_HEADER => 0,
+                CURLOPT_URL => $this->api_url,
+                CURLOPT_FRESH_CONNECT => 1,
+                CURLOPT_RETURNTRANSFER => 1,
                 // Not the greatest choice but it gets the job done.
-				CURLOPT_SSL_VERIFYPEER => false,
-				CURLOPT_SSL_VERIFYHOST => 2,
-				CURLOPT_FORBID_REUSE => 1,
-				CURLOPT_TIMEOUT => 60, 
-				CURLOPT_POSTFIELDS => $payload);
+                CURLOPT_SSL_VERIFYPEER => false,
+                CURLOPT_SSL_VERIFYHOST => 2,
+                CURLOPT_FORBID_REUSE => 1,
+                CURLOPT_TIMEOUT => 60, 
+                CURLOPT_POSTFIELDS => $payload);
 
-			$curl = curl_init();
-			curl_setopt_array($curl, $options);
-			$response = curl_exec($curl);
+            $curl = curl_init();
+            curl_setopt_array($curl, $options);
+            $response = curl_exec($curl);
 
             // setup our return based on our status and close the handle
-			if (curl_errno($curl) > 0) {
-				throw new Exception ('cURL error: '. curl_error($curl));
-			} else {
+            if (curl_errno($curl) > 0) {
+                throw new Exception ('cURL error: '. curl_error($curl));
+            } else {
                 if(!empty($response)) {
                     $response = json_decode($response);
                     if($response !== null) {
@@ -105,11 +105,11 @@ class srfax
                 } else {
                     throw new Exception("Empty response returned from SRFax API.");
                 }
-			}
-			curl_close($curl);
-		}
-		return $return;
-	}
+            }
+            curl_close($curl);
+        }
+        return $return;
+    }
 
     /*
      * Method to queue a fax via the SRFax API function Queue_Fax
@@ -192,39 +192,39 @@ class srfax
      * $options: Array of optional parameters possible for the SRFax API function Get_Fax_Usage
      * Returns array of fax usage properties on success, throws an exception on failure.
      */
-	public function Get_Fax_Usage($options = array()) {
+    public function Get_Fax_Usage($options = array()) {
         // Get our base params
         $params = $this->_set_options('Get_Fax_Usage', $options);
         
         // Make our API Call
         return $this->_call($params);
-	}
+    }
     
     /*
      * Method to get the fax inbox.
      * $options: Array of optional parameters possible for the SRFax API function Get_Fax_Inbox
      * Returns array of faxes on success, throws an exception on failure.
      */
-	public function Get_Fax_Inbox($options = array()) {
+    public function Get_Fax_Inbox($options = array()) {
         // Get our base params
         $params = $this->_set_options('Get_Fax_Inbox', $options);
         
         // Make our API Call
         return $this->_call($params);
-	}
+    }
 
     /*
      * Method to get the fax outbox.
      * $options: Array of optional parameters possible for the SRFax API function Get_Fax_Outbox
      * Returns array of faxes on success, throws an exception on failure.
      */
-	public function Get_Fax_Outbox($options = array()) {
+    public function Get_Fax_Outbox($options = array()) {
         // Get our base params
         $params = $this->_set_options('Get_Fax_Outbox', $options);
         
         // Make our API Call
         return $this->_call($params);
-	}
+    }
 
     /*
      * Method to retrieve a fax, either incoming or outgoing based on parameters
@@ -234,7 +234,7 @@ class srfax
      * $options: Array of optional parameters possible for the SRFax API function Retrieve_Fax
      * Returns file data from the retrieved fax on success, throws an exception on failure.
      */
-	public function Retrieve_Fax($direction, $fax_details_id = null, $fax_filename = null, $options = array()) {
+    public function Retrieve_Fax($direction, $fax_details_id = null, $fax_filename = null, $options = array()) {
         // Get our base params
         $params = $this->_set_options('Retrieve_Fax', $options);
 
@@ -246,7 +246,7 @@ class srfax
         $params['sDirection'] = $direction;
 
         // Validate that we have fax information to be retrieved
-		if(!empty($fax_details_id)) {
+        if(!empty($fax_details_id)) {
             $params['sFaxDetailsID'] = $fax_details_id;
         } elseif(!empty($fax_filename)) {
             $params['sFaxFileName'] = $fax_filename;
@@ -267,7 +267,7 @@ class srfax
      * $options: Array of optional parameters possible for the SRFax API function Retrieve_Fax
      * Returns empty string on success, throws an exception on failure.
      */
-	public function Update_Viewed_Status($direction, $viewed, $fax_details_id = null, $fax_filename = null, $options = array()) {
+    public function Update_Viewed_Status($direction, $viewed, $fax_details_id = null, $fax_filename = null, $options = array()) {
         // Get our base params
         $params = $this->_set_options('Update_Viewed_Status', $options);
 
@@ -286,7 +286,7 @@ class srfax
         $params['sMarkasViewed'] = $viewed;
 
         // Validate that we have fax information to be retrieved
-		if(!empty($fax_details_id)) {
+        if(!empty($fax_details_id)) {
             $params['sFaxDetailsID'] = $fax_details_id;
         } elseif(!empty($fax_filename)) {
             $params['sFaxFileName'] = $fax_filename;
@@ -306,7 +306,7 @@ class srfax
      * $options: Array of optional parameters possible for the SRFax API function Retrieve_Fax
      * Returns an empty string on success, throws an exception on failure.
      */
-	public function Delete_Fax($direction, $fax_details_id = null, $fax_filename = null, $options = array()) {
+    public function Delete_Fax($direction, $fax_details_id = null, $fax_filename = null, $options = array()) {
         // Get our base params
         $params = $this->_set_options('Delete_Fax', $options);
 
@@ -318,7 +318,7 @@ class srfax
         $params['sDirection'] = $direction;
 
         // Validate that we have fax information to be retrieved
-		if(!empty($fax_details_id)) {
+        if(!empty($fax_details_id)) {
             $params['sFaxDetailsID'] = $fax_details_id;
         } elseif(!empty($fax_filename)) {
             $params['sFaxFileName'] = $fax_filename;
