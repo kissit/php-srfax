@@ -10,6 +10,10 @@ SRFax API Documentation: https://www.srfax.com/srf/media/SRFax-REST-API-Document
 
 Simply clone/download the repo.  The only file required is srfax.php.  The only external requirement of the class is the standard PHP cURL module. 
 
+To instantiate the class:
+
+$srfax = new srfax(<SRFAX_CUST_NUMBER>, <SRFAX_API>, <SRFAX_API_URL>, <SENDER_FAX_NUMBER>, <SENDER_EMAIL>);
+
 ### Examples
 
 A script is also provided that shows a call of each function for example/testing purposes.  To use this script, do the following:
