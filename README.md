@@ -12,7 +12,7 @@ Simply clone/download the repo.  The only file required is srfax.php.  The only 
 
 To instantiate the class:
 
-$srfax = new srfax(<SRFAX_CUST_NUMBER>, <SRFAX_API>, <SRFAX_API_URL>, <SENDER_FAX_NUMBER>, <SENDER_EMAIL>);
+$srfax = new srfax(SRFAX_CUST_NUMBER, SRFAX_USER, SRFAX_API_URL, SENDER_FAX_NUMBER, SENDER_EMAIL);
 
 ### Examples
 
