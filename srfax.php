@@ -74,7 +74,8 @@ class srfax
                 CURLOPT_SSL_VERIFYPEER => false,
                 CURLOPT_SSL_VERIFYHOST => 2,
                 CURLOPT_FORBID_REUSE => 1,
-                CURLOPT_TIMEOUT => 60, 
+                CURLOPT_TIMEOUT => 60,
+                CURLOPT_SSLVERSION => 6,
                 CURLOPT_POSTFIELDS => $payload);
 
             $curl = curl_init();
