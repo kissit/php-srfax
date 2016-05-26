@@ -61,7 +61,7 @@ class srfax
             $params['access_id'] = $this->api_user;
             $params['access_pwd'] = $this->api_pass;
             $params['sResponseFormat'] = 'JSON';
-            $payload = json_encode($params);
+            $payload = http_build_query($params);
 
             // Setup our cURL call and run it
             $options = array (
