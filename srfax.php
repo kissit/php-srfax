@@ -127,8 +127,9 @@ class srfax
         $params = $this->_set_options('Queue_Fax', $options);
 
         // Validate the to #.  First remove all the special chars to turn it into a plain string of numbers.
-        $to = str_replace(array('-', '(', ')', '.'), '', $to);
-        if(empty($to) || strlen($to) < 11) {
+        $to = (string)$to;
+        $to = preg_replace("/\D/", "", $to);
+        if(strlen($to) != 11) {
             // Try to check for a valid number that is missing a 1 at the beginning and beat it with a hammer
             if(strlen($to) == 10) {
                 $to = "1{$to}";
